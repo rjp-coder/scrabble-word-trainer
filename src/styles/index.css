@@ -1,0 +1,137 @@
+:root {
+  --color-main: #333;
+  --color-bkg:darkgreen;
+  --color-tile:rgb(255, 255, 128);
+  --color-scrabble-yellow:rgb(200, 200, 128);
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+.tile {
+  display: flex;
+  margin:4px;
+  border: 4px outset var(--color-scrabble-yellow);
+  font-size: 48px;
+  background-color: var(--color-tile);
+  width: 80px;
+  height: 80px;
+  align-items: center;
+  justify-content: center;  font-size: 48px;
+  background-color: var(--color-tile);
+  text-align:center;
+  text-transform: capitalize;
+}
+
+.tile p {
+  margin: 0;
+  color:var(--color-main);
+}
+
+body {
+  color: var(--color-main);
+  background-image: url("/images/wooden2.jpg");
+}
+
+.game {
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.body {
+  display: flex;
+}
+
+.game-done{
+  margin:auto;
+}
+
+.help {
+  color: #999;
+  margin: 10px;
+  text-align: center;
+}
+
+.corrections{
+  overflow-wrap: anywhere;
+}
+
+.left {
+  text-align: center;
+  width: 50%;
+  border: thin solid #ddd;
+  background-color: var(--color-bkg);
+  display: flex;
+  align-items: center;
+  color: var(--color-scrabble-yellow);
+}
+
+.right {
+  text-align: center;
+  padding: 10px;
+  width: 50%;
+  border: thin solid #ddd;
+  padding-top:50px;
+  padding-bottom:50px;
+  background-color:var(--color-bkg);
+  color: var(--color-scrabble-yellow);
+  display: flex;
+  flex-direction: column;
+}
+
+
+.questionsDisplay{
+  text-align:right;
+  width:50%;
+}
+
+.word{
+  margin:auto;
+  display:inline-flex;
+}
+
+.star {
+	display: inline-block;
+  margin: 0 15px;
+}
+
+.star:after {
+  content: "\2605";
+  font-size: 45px;
+}
+
+.choiceWrapper {
+  margin:auto;
+  display:inline-flex;
+}
+
+.choice {
+  margin: 10px;
+  font-size: 25px;
+  background-color:var(--color-tile);
+  color:var(--color-main);
+  width: 100px;
+  height: 100px;
+
+}
+
+.choice:focus, .choice:active {
+  outline: none;
+  border: thin solid #ddd;
+}
+
+.timer {
+	color: #222;
+  margin-top: 3px;
+  margin-left: 3px;
+  width:50%;
+}
+
+.game-done .messageHeader {
+  font-size: 250%;
+  font-weight: bold;
+  margin: 15px;
+}
