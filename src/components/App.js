@@ -10,6 +10,7 @@ const ScrabbleWordTrainer = () => {
 	const [numQuestions, setNumQuestions] = useState(10);
 	const [gameStatus, setGameStatus] = useState("menu");
 	const gameState = [gameStatus, setGameStatus];
+	const [gameType, setGameType] = useState("yn")
 
 	const startNewGame = (props) => {
 		setGameId(gameId + 1);
@@ -23,7 +24,7 @@ const ScrabbleWordTrainer = () => {
 		<>
 			{gameStatus == "menu" ? (
 				<Menu startNewGame={startNewGame}></Menu>
-			) : (
+			) : gameType == "gapfill" ? (
 				<GapFillQuiz key={gameId} 
 				numQuestions={numQuestions} 
 				time={numQuestions * 3} 
@@ -31,7 +32,13 @@ const ScrabbleWordTrainer = () => {
 				initialWord={word}
 				initialSolutions={()=>utils.getGapSolutions(word)}
 				startNewGame={startNewGame} />
-			)}
+			) : <Quiz 
+				key={gameId} 
+				numQuestions={numQuestions} 
+				time={numQuestions * 3} 
+				gameState={gameState}
+				startNewGame={startNewGame}
+			  ></Quiz>}
 		</>
 	);
 }
