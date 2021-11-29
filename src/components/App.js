@@ -5,17 +5,18 @@ import Menu from './Menu';
 import utils from '../MathUtils';
 
 
-const ScrabbleWordTrainer = () => {
+const ScrabbleWordTrainer = (props) => {
 	const [gameId, setGameId] = useState(1);
 	const [numQuestions, setNumQuestions] = useState(10);
 	const [gameStatus, setGameStatus] = useState("menu");
-	const gameState = [gameStatus, setGameStatus];
-	const [gameType, setGameType] = useState("yn")
+	const gameState = [gameStatus, setGameStatus];	
+	const [gameType,setGameType] = useState(props.gameType);
 
 	const startNewGame = (props) => {
 		setGameId(gameId + 1);
 		setNumQuestions(props.numQuestions || 5);
 		setGameStatus("active");
+		setGameType(props.gameType);
 	};
 
 	const word=utils.getGapWord();
@@ -24,7 +25,7 @@ const ScrabbleWordTrainer = () => {
 		<>
 			{gameStatus == "menu" ? (
 				<Menu startNewGame={startNewGame}></Menu>
-			) : gameType == "gapfill" ? (
+			) : (gameType||"").toLowerCase() == "gapfill" ? (
 				<GapFillQuiz key={gameId} 
 				numQuestions={numQuestions} 
 				time={numQuestions * 3} 
