@@ -3,6 +3,7 @@ import Quiz from './Quiz';
 import GapFillQuiz from './GapFillQuiz'
 import Menu from './Menu';
 import utils from '../MathUtils';
+import {Lookup} from './Lookup';
 
 
 const ScrabbleWordTrainer = (props) => {
@@ -40,6 +41,7 @@ const ScrabbleWordTrainer = (props) => {
 				gameState={gameState}
 				startNewGame={startNewGame}
 			  ></Quiz>}
+			<Lookup />
 		</>
 	);
 }
