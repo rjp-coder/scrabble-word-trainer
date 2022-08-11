@@ -11,7 +11,7 @@ const ScrabbleWordTrainer = (props) => {
 	const [numQuestions, setNumQuestions] = useState(10);
 	const [gameStatus, setGameStatus] = useState("menu");
 	const gameState = [gameStatus, setGameStatus];	
-	const [gameType,setGameType] = useState(props.gameType);
+	const [gameType,setGameType] = useState("menu");
 
 	const startNewGame = (props) => {
 		setGameId(gameId + 1);
@@ -48,8 +48,16 @@ const ScrabbleWordTrainer = (props) => {
 	const components = {menu,gapfill,yesno,lookup};
 	content = components[gt];
 
+	function goBackToMenu(props){
+		setGameType("menu");
+		setGameStatus("menu");
+	}
+
+	const backButton = gameType=="menu" ? null: <button onClick={goBackToMenu}>Back</button>
+
 	return (
 		<>
+			{backButton}
 			{content}
 		</>
 	);
