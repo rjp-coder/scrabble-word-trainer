@@ -1,10 +1,11 @@
 import React from "react";
+import {useState} from "react";
 import {GenericTable} from "./GenericTable.js"
 
 export function FilterTable(props){
 
     let rows = props.rows;
-    let filter = props.filter;
+    const [filter,setFilter] = useState();
 
     if (filter){
         rows = rows.filter(r=>r.toLowerCase().includes(filter.toLowerCase()))
@@ -14,7 +15,7 @@ export function FilterTable(props){
 
     function onFilterChange(e){
         let newText = e.target.value;
-        console.log(newText);
+        setFilter(newText);
     }
 
     return (
