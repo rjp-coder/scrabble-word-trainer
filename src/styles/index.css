@@ -136,6 +136,22 @@ body {
   margin: 15px;
 }
 
-.rows_like_cells table tr {
-  display:table-cell;
+.word_table table tr {
+  display:inline-flex;
+  background-color:lightblue;
+  margin:2px;
+  padding:1px;
+  border: 1px solid grey; 
+ }
+
+.word_table thead{
+  display:none;
+}
+
+.word_table tbody{
+  display:block;
+  overflow-y:scroll;
+  max-height:200px;
+  height:200px;
+  background-color:#0004;
 }

@@ -5,6 +5,6 @@ import wordList from '../words.json'
 
 export function Lookup(){
     return (
-        <FilterTable className="rows_like_cells" rows={wordList} headers={["word"]}/>
+        <FilterTable className="word_table" rows={wordList} headers={["word"]}/>
     )
 }
