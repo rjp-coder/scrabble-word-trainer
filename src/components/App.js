@@ -22,26 +22,35 @@ const ScrabbleWordTrainer = (props) => {
 
 	const word=utils.getGapWord();
 
+	let content;
+	let gt = (gameType||"").toLowerCase();
+	if (gameStatus==="menu") gt = "menu";
+
+	const menu = <Menu startNewGame={startNewGame}></Menu>;
+	const gapfill = (<GapFillQuiz key={gameId} 
+		numQuestions={numQuestions} 
+		time={numQuestions * 3} 
+		gameState={gameState}
+		initialWord={word}
+		initialSolutions={()=>utils.getGapSolutions(word)}
+		startNewGame={startNewGame} />)
+	const yesno = (
+		<Quiz 
+			key={gameId} 
+			numQuestions={numQuestions} 
+			time={numQuestions * 3} 
+			gameState={gameState}
+			startNewGame={startNewGame}
+		  ></Quiz>
+	)
+	const lookup = <Lookup />
+
+	const components = {menu,gapfill,yesno,lookup};
+	content = components[gt];
+
 	return (
 		<>
-			{gameStatus == "menu" ? (
-				<Menu startNewGame={startNewGame}></Menu>
-			) : (gameType||"").toLowerCase() == "gapfill" ? (
-				<GapFillQuiz key={gameId} 
-				numQuestions={numQuestions} 
-				time={numQuestions * 3} 
-				gameState={gameState}
-				initialWord={word}
-				initialSolutions={()=>utils.getGapSolutions(word)}
-				startNewGame={startNewGame} />
-			) : <Quiz 
-				key={gameId} 
-				numQuestions={numQuestions} 
-				time={numQuestions * 3} 
-				gameState={gameState}
-				startNewGame={startNewGame}
-			  ></Quiz>}
-			<Lookup />
+			{content}
 		</>
 	);
 }

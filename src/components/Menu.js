@@ -8,6 +8,7 @@ const Menu = props => {
     <div className="menuWrapper">
       <p className="menuHeader">Choose Game Type</p>
       <div className="menu"> 
+          <button onClick={() => setGameType("lookup")}>Word Lookup</button>
           <button onClick={() => setGameType("gapFill")}>Gap Fill</button>
           <button onClick={() => setGameType("yesNo")}>Yes/No</button>
       </div>
