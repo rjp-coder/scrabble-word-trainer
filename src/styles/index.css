@@ -135,3 +135,7 @@ body {
   font-weight: bold;
   margin: 15px;
 }
+
+.rows_like_cells table tr {
+  display:table-cell;
+}

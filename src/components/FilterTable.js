@@ -19,7 +19,7 @@ export function FilterTable(props){
     }
 
     return (
-        <div>
+        <div className={props.className}>
         <input type="text" value={filter} onChange={onFilterChange} placeholder="Search"/> 
         <GenericTable rows={rows} headers={headers}></GenericTable>
         </div>
