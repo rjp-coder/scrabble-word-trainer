@@ -12,6 +12,7 @@ export function FilterTable(props){
     }
 
     let headers = props.headers;
+    let title = props.title;
 
     function onFilterChange(e){
         let newText = e.target.value;
@@ -20,6 +21,7 @@ export function FilterTable(props){
 
     return (
         <div className={props.className}>
+        <h3> {title}</h3>
         <input type="text" value={filter} onChange={onFilterChange} placeholder="Search"/> 
         <GenericTable rows={rows} headers={headers}></GenericTable>
         </div>
