@@ -3,18 +3,29 @@ import {useState} from 'react';
 
 const Menu = props => {
   const [numQuestions, setNumQuestions] = useState(10);
-  const [gameType,setGameType] = useState("yesNo");
+  const [gameType,setGameType] = useState("");
 
-  const askForNumQuestions = ["gapfill","yesno"].includes(gameType.toLowerCase());
-  console.log(askForNumQuestions);
-  const questionsNumPrompt = askForNumQuestions ? (
+  const questionsNumPrompt = (
   <>
-    <p className="menuHeader">Choose Number of questions</p>
-    <div className="menu"> {
-    [10, 20, 50, 100].map((x, i) => (
-      <button key={i} onClick={() => setNumQuestions(x)}>{x}</button>))}
-    </div>
-  </>) : null;
+    <MenuQuestion title="Choose Number of Questions">
+      <MultiChoiceAnswer onClick={setNumQuestions} answers={[5,10,20,40,50,80,100]}></MultiChoiceAnswer>
+    </MenuQuestion> 
+  </>
+  )
+
+
+      let menuQuestions;
+      let gt = (gameType.toLowerCase()||"");
+
+      if (gt == "yesno"){
+        menuQuestions = questionsNumPrompt;
+      } else if (gt == "gapfill"){
+        menuQuestions = questionsNumPrompt;
+      } else if (gt == "lookup"){
+        menuQuestions = null;
+      }
+
+
   return (
     <div className="menuWrapper">
       <p className="menuHeader">Choose Game Type</p>
@@ -23,7 +34,7 @@ const Menu = props => {
           <button onClick={() => setGameType("gapFill")}>Gap Fill</button>
           <button onClick={() => setGameType("yesNo")}>Yes/No</button>
       </div>
-      {questionsNumPrompt}
+      {menuQuestions}
       <button className="menu" onClick={() => props.startNewGame({ numQuestions,gameType })}>Start</button>
 
 
@@ -31,4 +42,23 @@ const Menu = props => {
   )
 
 }
+
+const MenuQuestion = props=>{
+  return (<>
+    <p className="menuHeader">{props.question}</p>
+    {props.children}
+    </>
+  )
+}
+
+const MultiChoiceAnswer = props =>{
+  const answers = props.answers.map(a=>{
+    return (<button key={a} onClick={()=>props.onClick(a)}>{a}</button>)
+  })
+  return (<div className="menu" >  
+  {answers}
+  </div>
+  )
+}
+
 export default Menu
