@@ -6,9 +6,11 @@ import Choice from "./Choice";
 import React from "react";
 import wordList from "../words.json"
 import {Corrections,StandardCorrections} from "./Corrections"
+import InfoFooter from "./InfoFooter";
 
 const useGameState = props => {
   const [secondsLeft, setSecondsLeft] = useState(props.time);
+  const [initialSeconds] = useState(props.time);
   const [numAnswered, setNumAnswered] = useState(0);
   const [word, setWord] = useState(utils.randomLetters(3));
   const [gameStatus, setGameStatus] = props.gameState;
@@ -103,10 +105,11 @@ const Quiz = props => {
           }
         </div>
       </div>
-      <div className="infoFooter" style={{ display: 'flex', alignItems: 'center' }}>
+      <InfoFooter secondsLeft={secondsLeft} initialSeconds={props.initialSeconds} numQuestions={props.numQuestions} numAnswered={numAnswered}></InfoFooter>
+      {/* <div className="infoFooter" style={{ display: 'flex', alignItems: 'center' }}>
         <div className="timer">Time Remaining: {secondsLeft}</div>
         <div className="questionsDisplay">Question: {Math.min(numAnswered + 1, props.numQuestions)}/{props.numQuestions}</div>
-      </div>
+      </div> */}
     </div>
   );
 };

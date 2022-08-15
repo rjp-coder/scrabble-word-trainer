@@ -9,8 +9,9 @@ import { Corrections, GapSolutions } from "./Corrections"
 import SolutionsTally from "./SolutionsTally";
 import InfoFooter from "./InfoFooter";
 
-const useGameState = ({startNewGame,numQuestions,initialWord,gameState,initialSolutions}) => {
-  const [secondsLeft, setSecondsLeft] = useState(100);
+const useGameState = ({startNewGame,numQuestions,initialWord,gameState,initialSolutions,time}) => {
+  const [secondsLeft, setSecondsLeft] = useState(time);
+  const [initialSeconds] = useState(time);
   const [points, setPoints] = useState(0);
   const [word, setWord] = useState(initialWord);
   const [gameStatus, setGameStatus] = gameState;
@@ -113,6 +114,8 @@ const GapFillQuiz = props => {
     nextQuestion,
   } = useGameState(props);
 
+  const initialSeconds = props.initialSeconds;
+
   const handleChange = event => {
     setGapValue(event.target.value);
     let target = event.target;
@@ -196,6 +199,7 @@ const GapFillQuiz = props => {
       </div>
       <InfoFooter numQuestions={numQuestions}
         secondsLeft={secondsLeft}
+        initialSeconds={initialSeconds}
         numAnswered={points} />
     </div>
   );

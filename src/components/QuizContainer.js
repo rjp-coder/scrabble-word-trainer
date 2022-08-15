@@ -51,6 +51,7 @@ const useGameState = props => {
 const QuizContainer = props => {
   const {
     secondsLeft,
+    initialSeconds,
     wrongAnswers,
     numAnswered,
     word,
@@ -64,7 +65,7 @@ const QuizContainer = props => {
     <div>
 
       <div className="infoFooter" style={{ display: 'flex', alignItems: 'center' }}>
-        <div className="timer">Time Remaining: {secondsLeft}</div>
+        <div className="timer"><span>Time Remaining: </span><meter value={secondsLeft} max={initialSeconds} min="0"></meter><span>{secondsLeft + "/" + initialSeconds}</span></div>
         <div className="questionsDisplay">Question: {Math.min(numAnswered + 1, props.numQuestions)}/{props.numQuestions}</div>
       </div>
     </div>

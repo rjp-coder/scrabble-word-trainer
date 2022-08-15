@@ -31,7 +31,8 @@ const ScrabbleWordTrainer = (props) => {
 	const menu = <Menu startNewGame={startNewGame} showAllGapFillSolutions={showAllGapFillSolutions} setShowAllGapFillSolutions={setShowAllGapFillSolutions}></Menu>;
 	const gapfill = (<GapFillQuiz key={gameId} 
 		numQuestions={numQuestions} 
-		time={numQuestions * 3} 
+		time={numQuestions * 3}
+		initialSeconds={numQuestions*3} 
 		gameState={gameState}
 		initialWord={word}
 		initialSolutions={()=>utils.getGapSolutions(word)}
@@ -42,6 +43,7 @@ const ScrabbleWordTrainer = (props) => {
 			key={gameId} 
 			numQuestions={numQuestions} 
 			time={numQuestions * 3} 
+			initialSeconds={numQuestions*3} 
 			gameState={gameState}
 			startNewGame={startNewGame}
 		  ></Quiz>
