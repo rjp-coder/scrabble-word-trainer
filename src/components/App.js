@@ -13,6 +13,8 @@ const ScrabbleWordTrainer = (props) => {
 	const gameState = [gameStatus, setGameStatus];	
 	const [gameType,setGameType] = useState("menu");
 
+	const [showAllGapFillSolutions,setShowAllGapFillSolutions] = useState(false);
+
 	const startNewGame = (props) => {
 		setGameId(gameId + 1);
 		setNumQuestions(props.numQuestions || 5);
@@ -26,13 +28,14 @@ const ScrabbleWordTrainer = (props) => {
 	let gt = (gameType||"").toLowerCase();
 	if (gameStatus==="menu") gt = "menu";
 
-	const menu = <Menu startNewGame={startNewGame}></Menu>;
+	const menu = <Menu startNewGame={startNewGame} showAllGapFillSolutions={showAllGapFillSolutions} setShowAllGapFillSolutions={setShowAllGapFillSolutions}></Menu>;
 	const gapfill = (<GapFillQuiz key={gameId} 
 		numQuestions={numQuestions} 
 		time={numQuestions * 3} 
 		gameState={gameState}
 		initialWord={word}
 		initialSolutions={()=>utils.getGapSolutions(word)}
+		showAllSolutions={showAllGapFillSolutions}
 		startNewGame={startNewGame} />)
 	const yesno = (
 		<Quiz 
@@ -63,3 +66,12 @@ const ScrabbleWordTrainer = (props) => {
 	);
 }
 export default ScrabbleWordTrainer
+
+/* TODOS
+
+Make the timer a meter element
+Make a scramble mode, where 7 letters are given and you have to make as many three letter words out of them
+Make a two letter word mode for each mode, and a both mode where applicable
+
+
+*/

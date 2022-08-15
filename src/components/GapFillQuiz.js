@@ -19,29 +19,6 @@ const useGameState = ({startNewGame,numQuestions,initialWord,gameState,initialSo
   const [solutions, setSolutions] = useState(initialSolutions);
   const [flash,setFlash] = useState("");
 
-  const handleChange = event => {
-    setGapValue(event.target.value);
-    let target = event.target;
-    event.target.disabled = "disabled";
-    const timerId = setTimeout(() => { onSubmit(target); target.disabled = ""; }, 200);
-  };
-
-  const onSubmit = (target) => {
-    let sols = solutions;
-    let w = word.replace(" ", target.value);
-    let i = getIndexOfSolutions(w);
-    if (~i) {
-      sols[i].isFound = true;
-      setPoints(+points + 1);
-      setSolutions(sols);
-      if (sols.every(x => x.isFound)) {
-        setFlash("flash");
-        setTimeout(()=>{nextQuestion();setFlash("")}, 1000);
-      }
-    }
-    setGapValue("");
-  };
-
   const getIndexOfSolutions = (word) => {
     let w = word;
     let index = -1;
@@ -91,10 +68,25 @@ const useGameState = ({startNewGame,numQuestions,initialWord,gameState,initialSo
 
 
   return {
-    secondsLeft,points, word, nextQuestion, gameStatus,
-    setGameStatus, wrongAnswers, gapValue, setGapValue,
-    handleChange, solutions, onSubmit, checkCorrect,flash,
-    startNewGame,numQuestions,inputTile
+    secondsLeft,
+    wrongAnswers,
+    points,
+    word,
+    gameStatus,
+    setGameStatus,
+    gapValue,
+    checkCorrect,
+    solutions,
+    flash,
+    startNewGame,
+    numQuestions,
+    inputTile,
+    setGapValue,
+    setPoints,
+    setSolutions,
+    getIndexOfSolutions,
+    setFlash,
+    nextQuestion,
   };
 };
 
@@ -107,14 +99,50 @@ const GapFillQuiz = props => {
     gameStatus,
     setGameStatus,
     gapValue,
-    handleChange,
     checkCorrect,
     solutions,
     flash,
     startNewGame,
     numQuestions,
-    inputTile
+    inputTile,
+    setGapValue,
+    setPoints,
+    setSolutions,
+    getIndexOfSolutions,
+    setFlash,
+    nextQuestion,
   } = useGameState(props);
+
+  const handleChange = event => {
+    setGapValue(event.target.value);
+    let target = event.target;
+    event.target.disabled = "disabled";
+    const timerId = setTimeout(() => { onSubmit(target); target.disabled = ""; }, 200);
+  };
+
+
+  const onSubmit = (target) => {
+    let sols = solutions;
+    let w = word.replace(" ", target.value);
+    let i = getIndexOfSolutions(w);
+    let showAllSolutions = props.showAllSolutions;
+    if (~i) {
+      sols[i].isFound = true;
+      if (!showAllSolutions) {
+        sols[i].letter = target.value;
+        sols==sols[i];
+      }
+      setPoints(+points + 1);
+      setSolutions(sols);
+      if (showAllSolutions && sols.every(x => x.isFound)) {
+        setFlash("flash");
+        setTimeout(()=>{nextQuestion();setFlash("")}, 1000);
+      } else if (!showAllSolutions){
+        setTimeout(()=>{nextQuestion()}, 200);
+      }
+    }
+    setGapValue("");
+  };
 
   const tileInputProps = {
     autoFocus:true,
@@ -135,7 +163,7 @@ const GapFillQuiz = props => {
   return (
     <div className="game">
       <div className="help">
-        Select yes or no to whether it is a valid word.
+        Fill in the missing letter.
       </div>
       <div className="body">
         <div className="left">
@@ -158,7 +186,7 @@ const GapFillQuiz = props => {
                 <input {...tileInputProps} ref={inputTile} style={tileInputStyle}
                 />
               </div>
-              <SolutionsTally anim={flash} animDuration={0.5} solutions={solutions} />
+              <SolutionsTally anim={flash} showAllSolutions={props.showAllSolutions} animDuration={0.5} solutions={solutions} />
             </>
           ) : (
               <Corrections><GapSolutions corrections={wrongAnswers} /></Corrections>
