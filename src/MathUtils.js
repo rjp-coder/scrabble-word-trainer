@@ -83,6 +83,30 @@ const utils = {
       if (isSolution)solutions.push({word:wl, letter:letter, isFound:false});
     }
     return solutions;
+   },
+
+   getTileDistribution:(game="scrabble")=>{
+    const tileDistributions = {
+      scrabble:"A-9, B-2, C-2, D-4, E-12, F-2, G-3, H-2, I-9, J-1, K-1, L-4, M-2, N-6, O-8, P-2, Q-1, R-6, S-4, T-6, U-4, V-2, W-2, X-1, Y-2, Z-1, _-2",
+      wordswithfriends:"_-2, E-13, A-9, I-8, O-8, T-7, R-6, S-5, D-5, N-5, L-4, U-4, H-4, G-3, Y-2, B-2, C-2, F-2, M-2, P-2, W-2, V-2, K-1, X-1, J-1, Q-1, Z-1"
+    }
+    const d = tileDistributions[game.toLowerCase()];
+    if (!d) {
+      console.error("Could not get tile distribution for " + game);
+      return;
+    }
+    const arr = d.split(", ");
+    let distribution = [];
+    for (let a of arr){
+      let letter = a.split("-")[0];
+      let amount = a.split("-")[1];
+      let i = 0;
+      while (i<amount){
+        distribution.push(letter);
+        i++;
+      }
+    }
+    return distribution;
    }
 };
 

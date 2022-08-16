@@ -1,14 +1,17 @@
 import React from "react"
 
-const TileDisplay = props => (
-<>
+const TileDisplay = props => {
+      const letters = props.word.split("").map((letter,i)=>{
+            return (<Tile key={letter+i} letter={letter}/>)
+      })
+      console.log(props.word.split(""))
+
+      return (
       <div className="word">
-            <Tile letter={props.word[0]}/>
-            <Tile letter={props.word[1]}/>
-            <Tile letter={props.word[2]}/>
+            {letters}
       </div>
-</>
-);
+)
+};
 
 const Tile = props => (
 <div className="tile"><p>{props.letter}</p></div>

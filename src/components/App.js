@@ -4,6 +4,7 @@ import GapFillQuiz from './GapFillQuiz'
 import Menu from './Menu';
 import utils from '../MathUtils';
 import {Lookup} from './Lookup';
+import Scramble from './Scramble';
 
 
 const ScrabbleWordTrainer = (props) => {
@@ -49,8 +50,24 @@ const ScrabbleWordTrainer = (props) => {
 		  ></Quiz>
 	)
 	const lookup = <Lookup />
+	let allTiles = utils.getTileDistribution("scrabble") ||[], i=0,scrambleWord="";
+	while (i<7 && allTiles.length>0){
+		let ri=Math.floor(Math.random()*allTiles.length);
+		let tile = allTiles?.splice(ri,ri+1)[0];
+		scrambleWord+=tile;
+		i++;
+	}
+	const scramble = (
+	<Scramble key={gameId} 
+	numQuestions={numQuestions} 
+	word={scrambleWord}
+	time={numQuestions * 3} 
+	initialSeconds={numQuestions*3} 
+	gameState={gameState}
+	startNewGame={startNewGame}
+	/>)
 
-	const components = {menu,gapfill,yesno,lookup};
+	const components = {menu,gapfill,yesno,lookup,scramble};
 	content = components[gt];
 
 	function goBackToMenu(props){

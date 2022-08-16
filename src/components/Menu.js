@@ -30,6 +30,8 @@ const Menu = props => {
         menuQuestions = [questionsNumPrompt,gapFillPrompt];
       } else if (gt == "lookup"){
         menuQuestions = null;
+      } else if (gt == "scramble"){
+        menuQuestions = null;
       }
 
 
@@ -40,6 +42,7 @@ const Menu = props => {
           <button onClick={() => setGameType("lookup")}>Word Lookup</button>
           <button onClick={() => setGameType("gapFill")}>Gap Fill</button>
           <button onClick={() => setGameType("yesNo")}>Yes/No</button>
+          <button onClick={() => setGameType("scramble")}>Scramble</button>
       </div>
       {menuQuestions}
       <button className="menu" onClick={() => props.startNewGame({ numQuestions,gameType })}>Start</button>
