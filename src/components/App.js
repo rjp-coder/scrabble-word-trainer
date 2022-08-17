@@ -50,17 +50,11 @@ const ScrabbleWordTrainer = (props) => {
 		  ></Quiz>
 	)
 	const lookup = <Lookup />
-	let allTiles = utils.getTileDistribution("scrabble") ||[], i=0,scrambleWord="";
-	while (i<7 && allTiles.length>0){
-		let ri=Math.floor(Math.random()*allTiles.length);
-		let tile = allTiles?.splice(ri,ri+1)[0];
-		scrambleWord+=tile;
-		i++;
-	}
+
 	const scramble = (
 	<Scramble key={gameId} 
 	numQuestions={numQuestions} 
-	word={scrambleWord}
+	initialWord={utils.draw7Tiles}
 	time={numQuestions * 3} 
 	initialSeconds={numQuestions*3} 
 	gameState={gameState}

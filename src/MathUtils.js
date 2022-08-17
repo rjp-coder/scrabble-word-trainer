@@ -107,6 +107,39 @@ const utils = {
       }
     }
     return distribution;
+   },
+
+   solveTileRackForWords:(scrambleWord)=>{ //TODO start with answer list and work backwards
+    let solutions = [];
+    let answerList = wordList.map(word=>word.toLowerCase());
+      for (let answer of answerList){
+        let tileRack = scrambleWord.toLowerCase();
+        let answerIsInRack = true;
+        for (let letter of answer.split("")){
+          if (tileRack.includes(letter)){
+            tileRack=tileRack.replace(letter,"");
+          } else if (tileRack.includes("_")){
+            tileRack=tileRack.replace("_","");
+          } else {
+            answerIsInRack=false;
+          }
+        }
+        if (answerIsInRack){
+          solutions.push(answer);
+        }
+      }
+      return solutions;
+   },
+
+   draw7Tiles:function (){
+      let allTiles = utils.getTileDistribution("scrabble") ||[], i=0,scrambleWord="";
+      while (i<7 && allTiles.length>0){
+        let ri=Math.floor(Math.random()*allTiles.length);
+        let tile = allTiles?.splice(ri,ri+1)[0];
+        scrambleWord+=tile;
+        i++;
+      }
+      return scrambleWord;
    }
 };
 

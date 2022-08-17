@@ -155,3 +155,7 @@ body {
   height:200px;
   background-color:#0004;
 }
+
+.all_answers_found{
+  color:green;
+}
