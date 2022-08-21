@@ -82,9 +82,9 @@ export default ScrabbleWordTrainer
 
 /* TODOS
 
-Make the timer a meter element
-Make a scramble mode, where 7 letters are given and you have to make as many three letter words out of them
-Make a two letter word mode for each mode, and a both mode where applicable
+Scramble UI
+Implement time loss on question wrong
+Show meter time loss animation on question wrong
 
 
 */

@@ -4,7 +4,6 @@ const TileDisplay = props => {
       const letters = props.word.split("").map((letter,i)=>{
             return (<Tile key={letter+i} letter={letter}/>)
       })
-      console.log(props.word.split(""))
 
       return (
       <div className="word">

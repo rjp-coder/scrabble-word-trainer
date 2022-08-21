@@ -18,7 +18,7 @@ export function GenericTable(props){
         )
     });
     return (
-        <table>
+        <table className={props.className}>
             <thead>
                 <tr>
                     {headers}
