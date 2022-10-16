@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import utils from "../MathUtils";
 import PlayAgain from "./PlayAgain";
 import TileDisplay from "./TileDisplay";
@@ -8,17 +8,23 @@ import wordList from "../words.json"
 import { Corrections, GapSolutions } from "./Corrections"
 import SolutionsTally from "./SolutionsTally";
 import InfoFooter from "./InfoFooter";
+import { QuizConfigContext } from "./App";
 
-const useGameState = ({startNewGame,numQuestions,initialWord,gameState,initialSolutions,time}) => {
-  const [secondsLeft, setSecondsLeft] = useState(time);
-  const [initialSeconds] = useState(time);
+const useGameState = ({ initialWord, initialSolutions }) => {
+  const quizConfig = useContext(QuizConfigContext)
+
+  const [secondsLeft, setSecondsLeft] = useState(quizConfig.time);
+  const [initialSeconds] = useState(quizConfig.time);
+  const [gameStatus, setGameStatus] = quizConfig.gameState;
+  const numQuestions = quizConfig.numQuestions;
+  const startNewGame = quizConfig.startNewGame;
+
   const [points, setPoints] = useState(0);
   const [word, setWord] = useState(initialWord);
-  const [gameStatus, setGameStatus] = gameState;
   const [wrongAnswers, setWrongAnswers] = useState([]);
   const [gapValue, setGapValue] = useState('');
   const [solutions, setSolutions] = useState(initialSolutions);
-  const [flash,setFlash] = useState("");
+  const [flash, setFlash] = useState("");
 
   const getIndexOfSolutions = (word) => {
     let w = word;
@@ -70,6 +76,7 @@ const useGameState = ({startNewGame,numQuestions,initialWord,gameState,initialSo
 
   return {
     secondsLeft,
+    initialSeconds,
     wrongAnswers,
     points,
     word,
@@ -112,9 +119,8 @@ const GapFillQuiz = props => {
     getIndexOfSolutions,
     setFlash,
     nextQuestion,
+    initialSeconds
   } = useGameState(props);
-
-  const initialSeconds = props.initialSeconds;
 
   const handleChange = event => {
     setGapValue(event.target.value);
@@ -133,34 +139,34 @@ const GapFillQuiz = props => {
       sols[i].isFound = true;
       if (!showAllSolutions) {
         sols[i].letter = target.value;
-        sols==sols[i];
+        sols == sols[i];
       }
       setPoints(+points + 1);
       setSolutions(sols);
       if (showAllSolutions && sols.every(x => x.isFound)) {
         setFlash("flash");
-        setTimeout(()=>{nextQuestion();setFlash("")}, 1000);
-      } else if (!showAllSolutions){
-        setTimeout(()=>{nextQuestion()}, 200);
+        setTimeout(() => { nextQuestion(); setFlash("") }, 1000);
+      } else if (!showAllSolutions) {
+        setTimeout(() => { nextQuestion() }, 200);
       }
     }
     setGapValue("");
   };
 
   const tileInputProps = {
-    autoFocus:true,
-    className:"tile",
-    maxLength:1,
-    onChange:handleChange,
-    value:gapValue
+    autoFocus: true,
+    className: "tile",
+    maxLength: 1,
+    onChange: handleChange,
+    value: gapValue
   }
 
   const tileInputStyle = {
-      color:
-        gapValue ?
-          checkCorrect(word.replace(" ", gapValue)) ?
-            "green" : "red"
-          : "black"
+    color:
+      gapValue ?
+        checkCorrect(word.replace(" ", gapValue)) ?
+          "green" : "red"
+        : "black"
   }
 
   return (
@@ -178,8 +184,8 @@ const GapFillQuiz = props => {
               winMsg={"Done with " + secondsLeft + " seconds remaining"}
             />
           ) : (
-              <TileDisplay word={word} />
-            )}
+            <TileDisplay word={word} />
+          )}
         </div>
         <div className="right">
 
@@ -192,8 +198,8 @@ const GapFillQuiz = props => {
               <SolutionsTally anim={flash} showAllSolutions={props.showAllSolutions} animDuration={0.5} solutions={solutions} />
             </>
           ) : (
-              <Corrections><GapSolutions corrections={wrongAnswers} /></Corrections>
-            )
+            <Corrections><GapSolutions corrections={wrongAnswers} /></Corrections>
+          )
           }
         </div>
       </div>

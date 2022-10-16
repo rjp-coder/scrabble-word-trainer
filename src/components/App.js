@@ -1,80 +1,61 @@
-import React, { useState } from 'react';
+import React, { createContext, useState } from 'react';
 import Quiz from './Quiz';
 import GapFillQuiz from './GapFillQuiz'
 import Menu from './Menu';
 import utils from '../MathUtils';
-import {Lookup} from './Lookup';
+import { Lookup } from './Lookup';
 import Scramble from './Scramble';
+import useScrabbleWordTrainer from '../hooks/useScrabbleWordTrainer';
 
+export const QuizConfigContext = createContext({ numQuestions: null, time: null, initialSeconds: null, gameState: null, startNewGame: null });
 
 const ScrabbleWordTrainer = (props) => {
-	const [gameId, setGameId] = useState(1);
-	const [numQuestions, setNumQuestions] = useState(10);
-	const [gameStatus, setGameStatus] = useState("menu");
-	const gameState = [gameStatus, setGameStatus];	
-	const [gameType,setGameType] = useState("menu");
 
-	const [showAllGapFillSolutions,setShowAllGapFillSolutions] = useState(false);
+	const {
+		gameId, setGameId, numQuestions, setNumQuestions, gameStatus, setGameStatus,
+		gameState, gameType, setGameType, showAllGapFillSolutions, setShowAllGapFillSolutions,
+		startNewGame, word, goBackToMenu
+	} = useScrabbleWordTrainer();
 
-	const startNewGame = (props) => {
-		setGameId(gameId + 1);
-		setNumQuestions(props.numQuestions || 5);
-		setGameStatus("active");
-		setGameType(props.gameType);
-	};
-
-	const word=utils.getGapWord();
 
 	let content;
-	let gt = (gameType||"").toLowerCase();
-	if (gameStatus==="menu") gt = "menu";
+	let gt = (gameType || "").toLowerCase();
+	if (gameStatus === "menu") gt = "menu";
 
 	const menu = <Menu startNewGame={startNewGame} showAllGapFillSolutions={showAllGapFillSolutions} setShowAllGapFillSolutions={setShowAllGapFillSolutions}></Menu>;
-	const gapfill = (<GapFillQuiz key={gameId} 
-		numQuestions={numQuestions} 
-		time={numQuestions * 3}
-		initialSeconds={numQuestions*3} 
-		gameState={gameState}
+	const gapfill = (<GapFillQuiz key={gameId}
 		initialWord={word}
-		initialSolutions={()=>utils.getGapSolutions(word)}
-		showAllSolutions={showAllGapFillSolutions}
-		startNewGame={startNewGame} />)
+		initialSolutions={() => utils.getGapSolutions(word)}
+		showAllSolutions={showAllGapFillSolutions} />)
 	const yesno = (
-		<Quiz 
-			key={gameId} 
-			numQuestions={numQuestions} 
-			time={numQuestions * 3} 
-			initialSeconds={numQuestions*3} 
-			gameState={gameState}
-			startNewGame={startNewGame}
-		  ></Quiz>
+		<Quiz
+			key={gameId}
+		></Quiz>
 	)
 	const lookup = <Lookup />
 
 	const scramble = (
-	<Scramble key={gameId} 
-	numQuestions={numQuestions} 
-	initialWord={utils.draw7Tiles}
-	time={numQuestions * 3} 
-	initialSeconds={numQuestions*3} 
-	gameState={gameState}
-	startNewGame={startNewGame}
-	/>)
+		<Scramble key={gameId}
+			numQuestions={numQuestions}
+			initialWord={utils.draw7Tiles}
+			time={numQuestions * 3}
+			initialSeconds={numQuestions * 3}
+			gameState={gameState}
+			startNewGame={startNewGame}
+		/>)
 
-	const components = {menu,gapfill,yesno,lookup,scramble};
+	const components = { menu, gapfill, yesno, lookup, scramble };
 	content = components[gt];
 
-	function goBackToMenu(props){
-		setGameType("menu");
-		setGameStatus("menu");
-	}
 
-	const backButton = gameType=="menu" ? null: <button onClick={goBackToMenu}>Back</button>
+	const backButton = gameType == "menu" ? null : <button onClick={goBackToMenu}>Back</button>
 
 	return (
 		<>
 			{backButton}
-			{content}
+			<QuizConfigContext.Provider value={{ numQuestions, time: numQuestions * 3, initialSeconds: numQuestions * 3, gameState, startNewGame }}>
+				{content}
+			</QuizConfigContext.Provider>
 		</>
 	);
 }

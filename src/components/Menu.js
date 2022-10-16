@@ -67,10 +67,11 @@ const Menu = props => {
 }
 
 function MenuButton({ gameType, children }) {
-  const { setGameType } = useContext(GameTypeContext);
-  console.log("SGT" + setGameType)
+  const setGameType = useContext(GameTypeContext).setGameType;
+  const currentGameType = useContext(GameTypeContext).gameType;
+  const style = currentGameType == gameType ? currentChoiceStyle : {};
   return (
-    <button onClick={() => setGameType(gameType)}>{children}</button>
+    <button style={style} onClick={() => setGameType(gameType)}>{children}</button>
   )
 }
 
@@ -82,10 +83,12 @@ const MenuQuestion = props => {
   )
 }
 
+const currentChoiceStyle = { backgroundColor: "blue", fontWeight: "bold", color: "red" };
+
 const MultiChoiceAnswer = props => {
   const currentAnswer = props.selected;
   const answers = props.answers.map((a, i) => {
-    let style = (a === currentAnswer) ? { backgroundColor: "blue", fontWeight: "bold", color: "red" } : {};
+    let style = (a === currentAnswer) ? currentChoiceStyle : {};
     let text = props.answerLabels?.length ? props.answerLabels[i] : a;
     let btn = <button key={a} style={style} onClick={() => props.onClick(a)}>{text}</button>
     return btn;
